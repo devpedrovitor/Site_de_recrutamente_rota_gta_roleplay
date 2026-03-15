@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROTA — Etapa 02</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --black:#000; --white:#fff; --gray-border:#2a2a2a; --gray-text:#888; --accent-dim:rgba(255,255,255,0.07); --red:#cc2200; }
+  html, body { min-height: 100vh; background: var(--black); font-family: 'Barlow Condensed', sans-serif; color: var(--white); overflow-x: hidden; }
+  .bg-layer { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+  .bg-layer img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(18px) brightness(0.2) saturate(0); transform: scale(1.08); }
+  .bg-overlay { position: fixed; inset: 0; z-index: 1; background: linear-gradient(105deg, rgba(0,0,0,0.95) 40%, rgba(0,0,0,0.6) 100%); }
+  .bg-scan { position: fixed; inset: 0; z-index: 2; pointer-events: none; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.16) 2px, rgba(0,0,0,0.16) 4px); }
+  .corner { position: fixed; width: 36px; height: 36px; z-index: 10; opacity: 0.2; }
+  .corner-tl { top: 20px; left: 20px; border-top: 1px solid #fff; border-left: 1px solid #fff; }
+  .corner-tr { top: 20px; right: 20px; border-top: 1px solid #fff; border-right: 1px solid #fff; }
+  .corner-bl { bottom: 20px; left: 20px; border-bottom: 1px solid #fff; border-left: 1px solid #fff; }
+  .corner-br { bottom: 20px; right: 20px; border-bottom: 1px solid #fff; border-right: 1px solid #fff; }
+
+  .page { position: relative; z-index: 10; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 48px 56px; animation: slideIn 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+
+  .panel { width: 100%; max-width: 540px; background: rgba(0,0,0,0.82); border: 1px solid var(--gray-border); border-top: 3px solid var(--white); padding: 38px 40px 48px; backdrop-filter: blur(8px); }
+
+  .panel-header { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-border); }
+  .logo-mark { width: 46px; height: 46px; flex-shrink: 0; background: var(--white); clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 60%, 60% 100%, 0 100%); }
+  .header-text .tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: var(--gray-text); text-transform: uppercase; margin-bottom: 4px; }
+  .header-text h1 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.06em; line-height: 1; }
+  .header-text h1 span { color: var(--gray-text); font-size: 18px; }
+  .back-btn { margin-left: auto; background: none; border: 1px solid var(--gray-border); color: var(--gray-text); font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.16em; padding: 8px 14px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+  .back-btn:hover { border-color: #555; color: #bbb; }
+
+  .etapa-badge { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .etapa-num { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--white); background: rgba(255,255,255,0.1); border: 1px solid #444; padding: 5px 12px; text-transform: uppercase; }
+  .etapa-dots { display: flex; gap: 6px; }
+  .dot { width: 8px; height: 8px; background: var(--white); }
+  .dot.dim { background: rgba(255,255,255,0.3); }
+
+  .progress-bar-wrap { margin-bottom: 24px; }
+  .progress-labels { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 0.15em; color: #444; text-transform: uppercase; margin-bottom: 6px; }
+  .progress-track { height: 2px; background: var(--gray-border); }
+  .progress-fill { height: 100%; background: var(--white); transition: width 0.35s ease; width: 0%; }
+
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gray-text); margin: 24px 0 12px; display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-border); }
+
+  .field { margin-bottom: 13px; }
+  label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-text); margin-bottom: 5px; }
+  label .hint { color: #4a4a4a; font-size: 9px; font-weight: 400; letter-spacing: 0.08em; text-transform: none; }
+  input, textarea { width: 100%; background: var(--accent-dim); border: 1px solid var(--gray-border); border-bottom-color: #3a3a3a; color: var(--white); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; padding: 10px 14px; outline: none; transition: border-color 0.2s, background 0.2s; appearance: none; -webkit-appearance: none; }
+  input::placeholder, textarea::placeholder { color: #383838; font-style: italic; }
+  input:focus, textarea:focus { border-color: var(--white); background: rgba(255,255,255,0.04); }
+  input.error { border-color: var(--red) !important; }
+  textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+
+  /* RADIO */
+  .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .radio-group input[type="radio"] { display: none; }
+  .radio-group label { cursor: pointer; border: 1px solid var(--gray-border); padding: 7px 14px; font-size: 11px; letter-spacing: 0.1em; color: var(--gray-text); transition: all 0.15s; margin-bottom: 0; text-transform: uppercase; font-weight: 600; width: auto; background: none; }
+  .radio-group input[type="radio"]:checked + label { border-color: var(--white); color: var(--white); background: rgba(255,255,255,0.09); }
+  .radio-group label:hover { border-color: #555; color: #ccc; }
+
+  /* CHECKBOX */
+  .check-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .check-row input[type="checkbox"] { width: 16px; height: 16px; min-width: 16px; margin-top: 3px; accent-color: var(--white); cursor: pointer; padding: 0; border: none; background: none; appearance: auto; -webkit-appearance: auto; flex-shrink: 0; }
+  .check-row span { font-size: 13px; color: #aaa; line-height: 1.5; letter-spacing: 0.02em; }
+  .check-row span strong { color: #ddd; }
+
+  /* TERMOS BLOCO */
+  .terms-block { background: rgba(255,255,255,0.03); border: 1px solid var(--gray-border); border-left: 3px solid #444; padding: 20px 20px 16px; margin-bottom: 6px; }
+
+  /* SUBMIT */
+  .btn-submit { display: block; width: 100%; margin-top: 28px; background: var(--white); color: var(--black); border: none; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.2em; padding: 14px 24px; cursor: pointer; position: relative; overflow: hidden; transition: background 0.2s; text-align: center; }
+  .btn-submit:hover { background: #e0e0e0; }
+  .btn-submit::before { content: ''; position: absolute; left: -100%; top: 0; width: 60%; height: 100%; background: rgba(255,255,255,0.25); transform: skewX(-20deg); transition: left 0.4s ease; }
+  .btn-submit:hover::before { left: 160%; }
+
+  .panel-footer { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--gray-border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-id { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: #2e2e2e; letter-spacing: 0.12em; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--white); box-shadow: 0 0 6px var(--white); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* SUCCESS */
+  .success-msg { display: none; text-align: center; padding: 52px 0; animation: fadeIn 0.5s ease; }
+  .success-msg.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .success-icon { font-size: 54px; margin-bottom: 22px; display: block; }
+  .success-msg h2 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .success-msg p { font-size: 14px; color: var(--gray-text); line-height: 1.8; }
+  .success-code { display: inline-block; margin-top: 20px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: #444; border: 1px solid #2a2a2a; padding: 8px 20px; }
+
+  @media (max-width: 600px) { .page { padding: 24px 16px; } .panel { padding: 24px 18px 36px; } }
+</style>
+</head>
+<body>
+<div class="bg-layer"><img src="766234d8153924468f24cc8f27352fd4.jpg" alt=""></div>
+<div class="bg-overlay"></div>
+<div class="bg-scan"></div>
+<div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div><div class="corner corner-br"></div>
+
+<div class="page">
+  <div class="panel">
+
+    <div class="panel-header">
+      <div class="logo-mark"></div>
+      <div class="header-text">
+        <div class="tag">Candidatura Oficial &nbsp;/&nbsp; GTA RP</div>
+        <h1>ROTA <span>— ETAPA 02</span></h1>
+      </div>
+      <a href="formulario.html" class="back-btn">← Voltar</a>
+    </div>
+
+    <div class="etapa-badge">
+      <div class="etapa-num">Etapa 02 / 02</div>
+      <div class="etapa-dots">
+        <div class="dot dim"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-labels"><span>Preenchimento</span><span id="progress-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <!-- FORM -->
+    <form id="taticoForm" novalidate>
+
+      <div class="section-label">05 — Questões Táticas</div>
+
+      <div class="field">
+        <label>Q1 — O que você faz ao receber ordens de um superior com as quais discorda durante uma operação?</label>
+        <textarea id="q1" placeholder="Descreva sua atitude..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label>Q2 — Descreva como age ao se aproximar de um suspeito armado em solo aberto.</label>
+        <textarea id="q2" placeholder="Explique a abordagem tática..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label>Q3 — O que é uso proporcional da força no contexto de RP policial?</label>
+        <input type="text" id="q3" placeholder="Descreva com suas palavras..." required>
+      </div>
+
+      <div class="field">
+        <label>Q4 — Em uma perseguição, o suspeito entra em área densamente habitada. Como procede?</label>
+        <textarea id="q4" placeholder="Descreva as ações que tomaria..." required></textarea>
+      </div>
+
+      <div class="section-label">06 — Conduta & Comportamento</div>
+
+      <div class="field">
+        <label>Q5 — O que faria se presenciasse um colega de facção cometendo RDM ou VDM?</label>
+        <textarea id="q5" placeholder="Descreva sua conduta..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label>Q6 — Como lida com situações de conflito OOC (fora do personagem) com outros jogadores?</label>
+        <input type="text" id="q6" placeholder="Ex: aciono staffs, converso em privado..." required>
+      </div>
+
+      <div class="field">
+        <label>Q7 — Por que você quer integrar a ROTA e o que pode agregar ao grupo?</label>
+        <textarea id="q7" placeholder="Seja específico sobre sua motivação e habilidades..." required></textarea>
+      </div>
+
+      <!-- TERMOS -->
+      <div class="section-label">07 — Termos & Conduta</div>
+
+      <div class="terms-block">
+        <div class="check-row">
+          <input type="checkbox" id="t1" required>
+          <span>Estou ciente de todas as <strong>regras de conduta do servidor</strong> e me comprometo a segui-las integralmente em todas as situações.</span>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="t2" required>
+          <span>Aceito que <strong>falsificar informações</strong> neste formulário resulta em <strong>banimento permanente</strong> e sem direito a recurso.</span>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="t3" required>
+          <span>Confirmo que li, entendi e aceito as <strong>normas internas da ROTA</strong>, incluindo hierarquia, disciplina e código de conduta operacional.</span>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="t4" required>
+          <span>Comprometo-me a manter <strong>postura RP realista</strong>, respeitar a narrativa do servidor e nunca priorizar ganhos OOC sobre a integridade do roleplay.</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">▶ ENVIAR CANDIDATURA</button>
+
+    </form>
+
+    <!-- SUCESSO -->
+    <div class="success-msg" id="successMsg">
+      <span class="success-icon">✦</span>
+      <h2>Candidatura Enviada</h2>
+      <p>
+        Sua ficha foi registrada com sucesso.<br>
+        Todas as etapas foram concluídas.<br><br>
+        Aguarde contato via <strong style="color:#ddd">Discord</strong> em até <strong style="color:#ddd">48 horas</strong>.
+      </p>
+      <div class="success-code" id="successCode">PROTOCOLO: ROTA-000000</div>
+    </div>
+
+    <div class="panel-footer">
+      <span class="footer-id">ROTA-RP / ETAPA 02 / 2026</span>
+      <div class="status-dot"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const trackedQ = ['q1','q2','q3','q4','q5','q6','q7'];
+  const checks = ['t1','t2','t3','t4'];
+
+  function updateProgress() {
+    let filled = trackedQ.filter(id => { const el = document.getElementById(id); return el && el.value.trim().length > 2; }).length;
+    checks.forEach(id => { if (document.getElementById(id)?.checked) filled++; });
+    const total = trackedQ.length + checks.length;
+    const pct = Math.round((filled / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+  document.getElementById('taticoForm').addEventListener('input', updateProgress);
+  document.getElementById('taticoForm').addEventListener('change', updateProgress);
+
+  document.getElementById('taticoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Valida campos
+    let ok = true;
+    trackedQ.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+      else el.classList.remove('error');
+    });
+
+    // Valida checkboxes
+    const allChecked = checks.every(id => document.getElementById(id)?.checked);
+    if (!allChecked) {
+      ok = false;
+      const firstUnchecked = checks.find(id => !document.getElementById(id)?.checked);
+      document.getElementById(firstUnchecked)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    if (!ok) {
+      if (document.querySelector('input.error')) {
+        document.querySelector('input.error, textarea.error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    // Gera protocolo
+    const code = 'ROTA-' + Date.now().toString().slice(-6);
+    document.getElementById('successCode').textContent = 'PROTOCOLO: ' + code;
+
+    // Mostra sucesso
+    document.getElementById('taticoForm').style.display = 'none';
+    document.getElementById('successMsg').classList.add('visible');
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progress-pct').textContent = '100%';
+
+    // Limpa sessionStorage
+    sessionStorage.removeItem('rota_etapa1');
+  });
+</script>
+</body>
+</html>

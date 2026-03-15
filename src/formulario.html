@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROTA — Etapa 1 / Ficha</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#000;--white:#fff;--gray-border:#2a2a2a;--gray-text:#888;--accent-dim:rgba(255,255,255,0.07);--red:#cc2200}
+html,body{min-height:100vh;background:var(--black);font-family:'Barlow Condensed',sans-serif;color:var(--white);overflow-x:hidden}
+.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden}
+.bg-layer img{width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(0.18) saturate(0);transform:scale(1.08)}
+.bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(105deg,rgba(0,0,0,0.96) 40%,rgba(0,0,0,0.65) 100%)}
+.bg-scan{position:fixed;inset:0;z-index:2;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);pointer-events:none}
+.page{position:relative;z-index:10;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px 56px 64px}
+.panel{width:100%;max-width:540px;background:rgba(0,0,0,0.84);border:1px solid var(--gray-border);border-top:3px solid var(--white);padding:40px 40px 48px;backdrop-filter:blur(8px);animation:slideIn 0.55s cubic-bezier(0.22,1,0.36,1) both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
+.panel-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--gray-border)}
+.logo-mark{width:46px;height:46px;flex-shrink:0;background:var(--white);clip-path:polygon(0 0,100% 0,100% 60%,60% 60%,60% 100%,0 100%)}
+.header-text .tag{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.28em;color:var(--gray-text);text-transform:uppercase;margin-bottom:4px}
+.header-text h1{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.06em;line-height:1}
+.header-text h1 span{color:var(--gray-text);font-size:18px}
+.etapa-badge{margin-left:auto;flex-shrink:0;border:1px solid var(--gray-border);padding:8px 14px;text-align:center}
+.etapa-badge .etapa-num{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--white)}
+.etapa-badge .etapa-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.2em;color:var(--gray-text);text-transform:uppercase;margin-top:2px}
+.progress-wrap{margin-bottom:26px}
+.progress-labels{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.15em;color:#444;text-transform:uppercase;margin-bottom:6px}
+.progress-track{height:2px;background:var(--gray-border)}
+.progress-fill{height:100%;background:var(--white);transition:width 0.35s ease;width:0%}
+.section-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray-text);margin:26px 0 14px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--gray-border)}
+.field{margin-bottom:14px}
+label{display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray-text);margin-bottom:6px}
+label .hint{color:#484848;font-size:9px;font-weight:400;letter-spacing:0.1em}
+input,select,textarea{width:100%;background:var(--accent-dim);border:1px solid var(--gray-border);border-bottom-color:#3a3a3a;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:15px;padding:10px 14px;outline:none;transition:border-color 0.2s,background 0.2s;appearance:none;-webkit-appearance:none}
+input::placeholder,textarea::placeholder{color:#333;font-style:italic}
+input:focus,select:focus,textarea:focus{border-color:var(--white);background:rgba(255,255,255,0.05)}
+input.error{border-color:var(--red)!important}
+textarea{resize:vertical;min-height:82px;line-height:1.5}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+select option{background:#111;color:#fff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.radio-group{display:flex;gap:8px;flex-wrap:wrap}
+.radio-group input[type="radio"]{display:none}
+.radio-group label{cursor:pointer;border:1px solid var(--gray-border);padding:7px 14px;font-size:11px;letter-spacing:0.1em;color:var(--gray-text);transition:all 0.15s;margin-bottom:0;text-transform:uppercase;font-weight:600}
+.radio-group input[type="radio"]:checked+label{border-color:var(--white);color:var(--white);background:rgba(255,255,255,0.1)}
+.radio-group label:hover{border-color:#555;color:#ccc}
+.btn-continue{display:block;width:100%;margin-top:32px;background:var(--white);color:var(--black);border:none;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.18em;padding:15px 24px;cursor:pointer;position:relative;overflow:hidden;transition:background 0.2s;text-align:center}
+.btn-continue:hover{background:#e0e0e0}
+.btn-continue::before{content:'';position:absolute;left:-100%;top:0;width:60%;height:100%;background:rgba(255,255,255,0.25);transform:skewX(-20deg);transition:left 0.4s ease}
+.btn-continue:hover::before{left:160%}
+.panel-footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--gray-border);display:flex;justify-content:space-between;align-items:center}
+.footer-id{font-family:'Share Tech Mono',monospace;font-size:9px;color:#2e2e2e;letter-spacing:0.12em}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--white);box-shadow:0 0 6px var(--white);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
+.back-link{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.18em;color:#3a3a3a;text-decoration:none;text-transform:uppercase;transition:color 0.2s}
+.back-link:hover{color:#777}
+@media(max-width:600px){.page{padding:24px 16px 48px}.panel{padding:28px 20px 36px}.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg-layer"><img src="rota_logo.jpg" alt=""></div>
+<div class="bg-overlay"></div>
+<div class="bg-scan"></div>
+<div class="page">
+  <div class="panel">
+    <div class="panel-header">
+      <div class="logo-mark"></div>
+      <div class="header-text">
+        <div class="tag">Candidatura Oficial &nbsp;/&nbsp; RP</div>
+        <h1>ROTA <span>— FICHA</span></h1>
+      </div>
+      <div class="etapa-badge">
+        <div class="etapa-num">1/2</div>
+        <div class="etapa-lbl">Etapa</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-labels"><span>Progresso da etapa</span><span id="pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <form id="rpForm" novalidate>
+      <div class="section-label">01 — Dados do Personagem</div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Nome Completo <span class="hint">(IC)</span></label>
+          <input type="text" id="f-nome" placeholder="Ex: João da Silva" required>
+        </div>
+        <div class="field">
+          <label>Idade <span class="hint">(IC)</span></label>
+          <input type="number" id="f-idade" placeholder="Ex: 28" min="18" max="60" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Nickname / Tag In-Game</label>
+        <input type="text" id="f-nick" placeholder="Ex: [ROTA] JoaoSilva" required>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Discord</label>
+          <input type="text" id="f-discord" placeholder="usuario#0000" required>
+        </div>
+        <div class="field">
+          <label>ID no Servidor</label>
+          <input type="text" id="f-id" placeholder="Ex: 12345" required>
+        </div>
+      </div>
+      <div class="section-label">02 — Background & Experiência</div>
+      <div class="field">
+        <label>Experiência com RP Policial</label>
+        <div class="radio-group">
+          <input type="radio" name="exp" id="exp-none" value="Nenhuma"><label for="exp-none">Nenhuma</label>
+          <input type="radio" name="exp" id="exp-basic" value="Básica"><label for="exp-basic">Básica</label>
+          <input type="radio" name="exp" id="exp-med" value="Intermediária"><label for="exp-med">Intermediária</label>
+          <input type="radio" name="exp" id="exp-adv" value="Avançada"><label for="exp-adv">Avançada</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Histórico do Personagem <span class="hint">(mín. 3 linhas)</span></label>
+        <textarea id="f-hist" placeholder="Descreva a trajetória do seu personagem, motivações para entrar na ROTA e background..." required></textarea>
+      </div>
+      <div class="section-label">03 — Conhecimento de Roleplay</div>
+      <div class="field">
+        <label>O que é RDM? <span class="hint">Random Death Match</span></label>
+        <input type="text" id="f-rdm" placeholder="Descreva com suas palavras..." required>
+      </div>
+      <div class="field">
+        <label>O que é VDM? <span class="hint">Vehicle Death Match</span></label>
+        <input type="text" id="f-vdm" placeholder="Descreva com suas palavras..." required>
+      </div>
+      <div class="field">
+        <label>O que é PG? <span class="hint">Power Gaming</span></label>
+        <input type="text" id="f-pg" placeholder="Descreva com suas palavras..." required>
+      </div>
+      <div class="field">
+        <label>O que é Meta Gaming?</label>
+        <input type="text" id="f-meta" placeholder="Descreva com suas palavras..." required>
+      </div>
+      <div class="field">
+        <label>O que é Car Jacking?</label>
+        <input type="text" id="f-cj" placeholder="Descreva com suas palavras..." required>
+      </div>
+      <div class="field">
+        <label>O que é Surf? <span class="hint">no contexto RP</span></label>
+        <input type="text" id="f-surf" placeholder="Descreva com suas palavras..." required>
+      </div>
+      <div class="section-label">04 — Disponibilidade</div>
+      <div class="field">
+        <label>Disponibilidade Diária</label>
+        <div class="radio-group">
+          <input type="radio" name="disp" id="d1" value="1–3h/dia"><label for="d1">1–3h/dia</label>
+          <input type="radio" name="disp" id="d2" value="3–5h/dia"><label for="d2">3–5h/dia</label>
+          <input type="radio" name="disp" id="d3" value="5h+/dia"><label for="d3">5h+/dia</label>
+        </div>
+      </div>
+      <button type="submit" class="btn-continue">▶ CONTINUAR CANDIDATURA</button>
+    </form>
+    <div class="panel-footer">
+      <a href="index.html" class="back-link">← Voltar ao início</a>
+      <span class="footer-id">ETAPA 1 / ROTA-RP / 2026</span>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+</div>
+<script>
+const trackedIds=['f-nome','f-idade','f-nick','f-discord','f-id','f-hist','f-rdm','f-vdm','f-pg','f-meta','f-cj','f-surf'];
+function updateProgress(){
+  let filled=trackedIds.filter(id=>{const el=document.getElementById(id);return el&&el.value.trim().length>1}).length;
+  if(document.querySelector('input[name="exp"]:checked'))filled++;
+  if(document.querySelector('input[name="disp"]:checked'))filled++;
+  const pct=Math.round((filled/(trackedIds.length+2))*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('pct').textContent=pct+'%';
+}
+document.getElementById('rpForm').addEventListener('input',updateProgress);
+document.getElementById('rpForm').addEventListener('change',updateProgress);
+document.getElementById('rpForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  let ok=true;
+  trackedIds.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el||!el.value.trim()){if(el)el.classList.add('error');ok=false;}
+    else{if(el)el.classList.remove('error');}
+  });
+  if(!ok){const fe=document.querySelector('.error');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  const dados={};
+  trackedIds.forEach(id=>{dados[id]=document.getElementById(id).value.trim();});
+  const expEl=document.querySelector('input[name="exp"]:checked');
+  const dispEl=document.querySelector('input[name="disp"]:checked');
+  dados.exp=expEl?expEl.value:'';
+  dados.disp=dispEl?dispEl.value:'';
+  sessionStorage.setItem('rota_etapa1',JSON.stringify(dados));
+  window.location.href='tatico.html';
+});
+</script>
+</body>
+</html>

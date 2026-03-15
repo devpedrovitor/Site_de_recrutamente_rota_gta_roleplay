@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROTA — Candidatura Oficial</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --black:#000; --white:#fff; --gray-border:#2a2a2a; --gray-text:#888; }
+  html, body {
+    min-height: 100vh; background: var(--black);
+    font-family: 'Barlow Condensed', sans-serif; color: var(--white); overflow-x: hidden;
+  }
+  .bg-layer { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+  .bg-layer img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    filter: blur(20px) brightness(0.18) saturate(0); transform: scale(1.1);
+  }
+  .bg-overlay {
+    position: fixed; inset: 0; z-index: 1;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.95) 100%);
+  }
+  .bg-scan {
+    position: fixed; inset: 0; z-index: 2; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+  }
+  .corner { position: fixed; width: 40px; height: 40px; z-index: 10; opacity: 0.25; }
+  .corner-tl { top: 24px; left: 24px; border-top: 1px solid #fff; border-left: 1px solid #fff; }
+  .corner-tr { top: 24px; right: 24px; border-top: 1px solid #fff; border-right: 1px solid #fff; }
+  .corner-bl { bottom: 24px; left: 24px; border-bottom: 1px solid #fff; border-left: 1px solid #fff; }
+  .corner-br { bottom: 24px; right: 24px; border-bottom: 1px solid #fff; border-right: 1px solid #fff; }
+  .page {
+    position: relative; z-index: 10; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 60px 24px; text-align: center;
+  }
+  .logo-wrap { margin-bottom: 36px; animation: dropIn 0.9s cubic-bezier(0.22,1,0.36,1) both; }
+  .logo-star { font-size: 13px; color: var(--white); display: block; letter-spacing: 0.5em; opacity: 0.5; margin-bottom: 10px; }
+  .logo-mark {
+    width: 78px; height: 78px; background: var(--white); margin: 0 auto;
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 60%, 60% 100%, 0 100%);
+  }
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-36px) scale(0.85); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .supertitle {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    letter-spacing: 0.32em; color: var(--gray-text); text-transform: uppercase;
+    margin-bottom: 14px; animation: fadeUp 0.7s 0.25s both;
+  }
+  .title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(90px, 18vw, 160px);
+    letter-spacing: 0.06em; line-height: 0.85; color: var(--white);
+    animation: fadeUp 0.7s 0.33s both;
+  }
+  .title-sub {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(14px, 2.5vw, 22px);
+    letter-spacing: 0.38em; color: var(--gray-text); margin-top: 12px;
+    animation: fadeUp 0.7s 0.4s both;
+  }
+  .divider {
+    width: 1px; height: 64px;
+    background: linear-gradient(to bottom, transparent, #555, transparent);
+    margin: 44px auto; animation: fadeUp 0.7s 0.46s both;
+  }
+  .desc {
+    max-width: 460px; font-size: 15px; font-weight: 300; color: #666;
+    line-height: 1.85; letter-spacing: 0.04em; margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.52s both;
+  }
+  .desc strong { color: #bbb; font-weight: 600; }
+  .steps {
+    display: flex; align-items: center; margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.57s both;
+  }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .step-num {
+    width: 34px; height: 34px; border: 1px solid #3a3a3a;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gray-text);
+  }
+  .step-lbl {
+    font-family: 'Share Tech Mono', monospace; font-size: 8px;
+    letter-spacing: 0.14em; color: #444; text-transform: uppercase; white-space: nowrap;
+  }
+  .step-line { width: 52px; height: 1px; background: #2e2e2e; margin-bottom: 20px; }
+  .stats { display: flex; gap: 52px; margin-bottom: 52px; animation: fadeUp 0.7s 0.62s both; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 0.04em; line-height: 1; }
+  .stat-lbl { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gray-text); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 5px; }
+  .btn-start {
+    background: var(--white); color: var(--black); border: none;
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px;
+    letter-spacing: 0.22em; padding: 16px 64px; cursor: pointer;
+    position: relative; overflow: hidden; transition: background 0.2s;
+    animation: fadeUp 0.7s 0.67s both; text-decoration: none; display: inline-block;
+  }
+  .btn-start:hover { background: #ddd; }
+  .btn-start::before {
+    content: ''; position: absolute; left: -100%; top: 0;
+    width: 60%; height: 100%; background: rgba(255,255,255,0.28);
+    transform: skewX(-20deg); transition: left 0.4s ease;
+  }
+  .btn-start:hover::before { left: 160%; }
+  .warning {
+    margin-top: 26px; font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 0.18em; color: #333;
+    text-transform: uppercase; animation: fadeUp 0.7s 0.72s both;
+  }
+  @media (max-width: 500px) {
+    .stats { gap: 28px; }
+    .step-line { width: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-layer"><img src="766234d8153924468f24cc8f27352fd4.jpg" alt=""></div>
+<div class="bg-overlay"></div>
+<div class="bg-scan"></div>
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+
+<div class="page">
+  <div class="logo-wrap">
+    <span class="logo-star">★</span>
+    <div class="logo-mark"></div>
+  </div>
+
+  <div class="supertitle">Rondas Ostensivas Tobias de Aguiar &nbsp;·&nbsp; GTA RP</div>
+  <div class="title">ROTA</div>
+  <div class="title-sub">Processo Seletivo &nbsp;·&nbsp; 2026</div>
+
+  <div class="divider"></div>
+
+  <p class="desc">
+    Você está prestes a iniciar sua candidatura para integrar a <strong>ROTA</strong>.<br>
+    O processo é dividido em <strong>2 etapas</strong>. Leia cada pergunta com atenção.<br>
+    Respostas vagas ou incorretas resultam em <strong>reprovação automática</strong>.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-lbl">Dados & RP</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-lbl">Tático & Conduta</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-num">✦</div>
+      <div class="step-lbl">Enviado</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">13</div><div class="stat-lbl">Perguntas</div></div>
+    <div class="stat"><div class="stat-num">02</div><div class="stat-lbl">Etapas</div></div>
+    <div class="stat"><div class="stat-num">01</div><div class="stat-lbl">Tentativa</div></div>
+  </div>
+
+  <a href="formulario.html" class="btn-start">▶ INICIAR CANDIDATURA</a>
+  <div class="warning">⚠ &nbsp; falsificar informações resulta em banimento permanente</div>
+</div>
+</body>
+</html>
