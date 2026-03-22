@@ -95,7 +95,7 @@
 </style>
 </head>
 <body>
-<div class="bg-layer"><img src="../img/logo_rota.jpg" alt=""></div>
+<div class="bg-layer"><img src="../static/logo_rota.jpg" alt=""></div>
 <div class="bg-overlay"></div>
 <div class="bg-scan"></div>
 <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
@@ -110,7 +110,7 @@
         <div class="tag">Candidatura Oficial &nbsp;/&nbsp; GTA RP</div>
         <h1>ROTA <span>— ETAPA 02</span></h1>
       </div>
-      <a href="formulario.html" class="back-btn">← Voltar</a>
+      <a href="{url_for('formulario')}" class="back-btn">← Voltar</a>
     </div>
 
     <div class="etapa-badge">
@@ -127,46 +127,45 @@
     </div>
 
     <!-- FORM -->
-    <form id="taticoForm" novalidate>
+    <form id="taticoForm" action="tatico" method="post" novalidate>
 
       <div class="section-label">05 — Questões Táticas</div>
+<div class="field">
+  <label>Q1 — O que você faz ao receber ordens de um superior com as quais discorda durante uma operação?</label>
+  <textarea id="q1" name="q1" placeholder="Descreva sua atitude..." required></textarea>
+</div>
 
-      <div class="field">
-        <label>Q1 — O que você faz ao receber ordens de um superior com as quais discorda durante uma operação?</label>
-        <textarea id="q1" placeholder="Descreva sua atitude..." required></textarea>
-      </div>
+<div class="field">
+  <label>Q2 — Descreva como age ao se aproximar de um suspeito armado em solo aberto.</label>
+  <textarea id="q2" name="q2" placeholder="Explique a abordagem tática..." required></textarea>
+</div>
 
-      <div class="field">
-        <label>Q2 — Descreva como age ao se aproximar de um suspeito armado em solo aberto.</label>
-        <textarea id="q2" placeholder="Explique a abordagem tática..." required></textarea>
-      </div>
+<div class="field">
+  <label>Q3 — O que é uso proporcional da força no contexto de RP policial?</label>
+  <input type="text" id="q3" name="q3" placeholder="Descreva com suas palavras..." required>
+</div>
 
-      <div class="field">
-        <label>Q3 — O que é uso proporcional da força no contexto de RP policial?</label>
-        <input type="text" id="q3" placeholder="Descreva com suas palavras..." required>
-      </div>
+<div class="field">
+  <label>Q4 — Em uma perseguição, o suspeito entra em área densamente habitada. Como procede?</label>
+  <textarea id="q4" name="q4" placeholder="Descreva as ações que tomaria..." required></textarea>
+</div>
 
-      <div class="field">
-        <label>Q4 — Em uma perseguição, o suspeito entra em área densamente habitada. Como procede?</label>
-        <textarea id="q4" placeholder="Descreva as ações que tomaria..." required></textarea>
-      </div>
+<div class="section-label">06 — Conduta & Comportamento</div>
 
-      <div class="section-label">06 — Conduta & Comportamento</div>
+<div class="field">
+  <label>Q5 — O que faria se presenciasse um colega de facção cometendo RDM ou VDM?</label>
+  <textarea id="q5" name="q5" placeholder="Descreva sua conduta..." required></textarea>
+</div>
 
-      <div class="field">
-        <label>Q5 — O que faria se presenciasse um colega de facção cometendo RDM ou VDM?</label>
-        <textarea id="q5" placeholder="Descreva sua conduta..." required></textarea>
-      </div>
+<div class="field">
+  <label>Q6 — Como lida com situações de conflito OOC (fora do personagem) com outros jogadores?</label>
+  <input type="text" id="q6" name="q6" placeholder="Ex: aciono staffs, converso em privado..." required>
+</div>
 
-      <div class="field">
-        <label>Q6 — Como lida com situações de conflito OOC (fora do personagem) com outros jogadores?</label>
-        <input type="text" id="q6" placeholder="Ex: aciono staffs, converso em privado..." required>
-      </div>
-
-      <div class="field">
-        <label>Q7 — Por que você quer integrar a ROTA e o que pode agregar ao grupo?</label>
-        <textarea id="q7" placeholder="Seja específico sobre sua motivação e habilidades..." required></textarea>
-      </div>
+<div class="field">
+  <label>Q7 — Por que você quer integrar a ROTA e o que pode agregar ao grupo?</label>
+  <textarea id="q7" name="q7" placeholder="Seja específico sobre sua motivação e habilidades..." required></textarea>
+</div>
 
       <!-- TERMOS -->
       <div class="section-label">07 — Termos & Conduta</div>
@@ -230,8 +229,7 @@
   document.getElementById('taticoForm').addEventListener('change', updateProgress);
 
   document.getElementById('taticoForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
+  
     // Valida campos
     let ok = true;
     trackedQ.forEach(id => {
@@ -264,9 +262,6 @@
     document.getElementById('successMsg').classList.add('visible');
     document.getElementById('progressFill').style.width = '100%';
     document.getElementById('progress-pct').textContent = '100%';
-
-    // Limpa sessionStorage
-    sessionStorage.removeItem('rota_etapa1');
   });
 </script>
 </body>

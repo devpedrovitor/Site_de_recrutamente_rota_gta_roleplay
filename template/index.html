@@ -116,7 +116,7 @@
 </style>
 </head>
 <body>
-<div class="bg-layer"><img src="../img/logo_rota.jpg" alt=""></div>
+<div class="bg-layer"><img src="../static/logo_rota.jpg" alt=""></div>
 <div class="bg-overlay"></div>
 <div class="bg-scan"></div>
 <div class="corner corner-tl"></div>
@@ -165,7 +165,7 @@
     <div class="stat"><div class="stat-num">01</div><div class="stat-lbl">Tentativa</div></div>
   </div>
 
-  <a href="src/formulario.html" class="btn-start">▶ INICIAR CANDIDATURA</a>
+  <a href="{{ url_for('formulario') }}" class="btn-start">▶ INICIAR CANDIDATURA</a>
   <div class="warning">⚠ &nbsp; falsificar informações resulta em banimento permanente</div>
 </div>
 </body>

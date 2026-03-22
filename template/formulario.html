@@ -59,7 +59,7 @@ select option{background:#111;color:#fff}
 </style>
 </head>
 <body>
-<div class="bg-layer"><img src="../img/logo_rota.jpg" alt=""></div>
+<div class="bg-layer"><img src="../static/logo_rota.jpg" alt=""></div>
 <div class="bg-overlay"></div>
 <div class="bg-scan"></div>
 <div class="page">
@@ -79,87 +79,82 @@ select option{background:#111;color:#fff}
       <div class="progress-labels"><span>Progresso da etapa</span><span id="pct">0%</span></div>
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     </div>
-    <form id="rpForm" novalidate>
-      <div class="section-label">01 — Dados do Personagem</div>
-      <div class="grid-2">
-        <div class="field">
-          <label>Nome Completo <span class="hint">(IC)</span></label>
-          <input type="text" id="f-nome" placeholder="Ex: João da Silva" required>
-        </div>
-        <div class="field">
-          <label>Idade <span class="hint">(IC)</span></label>
-          <input type="number" id="f-idade" placeholder="Ex: 28" min="18" max="60" required>
-        </div>
-      </div>
-      <div class="field">
-        <label>Nickname / Tag In-Game</label>
-        <input type="text" id="f-nick" placeholder="Ex: [ROTA] JoaoSilva" required>
-      </div>
-      <div class="grid-2">
-        <div class="field">
-          <label>Discord</label>
-          <input type="text" id="f-discord" placeholder="usuario#0000" required>
-        </div>
-        <div class="field">
-          <label>ID no Servidor</label>
-          <input type="text" id="f-id" placeholder="Ex: 12345" required>
-        </div>
-      </div>
-      <div class="section-label">02 — Background & Experiência</div>
-      <div class="field">
-        <label>Experiência com RP Policial</label>
-        <div class="radio-group">
-          <input type="radio" name="exp" id="exp-none" value="Nenhuma"><label for="exp-none">Nenhuma</label>
-          <input type="radio" name="exp" id="exp-basic" value="Básica"><label for="exp-basic">Básica</label>
-          <input type="radio" name="exp" id="exp-med" value="Intermediária"><label for="exp-med">Intermediária</label>
-          <input type="radio" name="exp" id="exp-adv" value="Avançada"><label for="exp-adv">Avançada</label>
-        </div>
-      </div>
-      <div class="field">
-        <label>Histórico do Personagem <span class="hint">(mín. 3 linhas)</span></label>
-        <textarea id="f-hist" placeholder="Descreva a trajetória do seu personagem, motivações para entrar na ROTA e background..." required></textarea>
-      </div>
-      <div class="section-label">03 — Conhecimento de Roleplay</div>
-      <div class="field">
-        <label>O que é RDM? <span class="hint">Random Death Match</span></label>
-        <input type="text" id="f-rdm" placeholder="Descreva com suas palavras..." required>
-      </div>
-      <div class="field">
-        <label>O que é VDM? <span class="hint">Vehicle Death Match</span></label>
-        <input type="text" id="f-vdm" placeholder="Descreva com suas palavras..." required>
-      </div>
-      <div class="field">
-        <label>O que é PG? <span class="hint">Power Gaming</span></label>
-        <input type="text" id="f-pg" placeholder="Descreva com suas palavras..." required>
-      </div>
-      <div class="field">
-        <label>O que é Meta Gaming?</label>
-        <input type="text" id="f-meta" placeholder="Descreva com suas palavras..." required>
-      </div>
-      <div class="field">
-        <label>O que é Car Jacking?</label>
-        <input type="text" id="f-cj" placeholder="Descreva com suas palavras..." required>
-      </div>
-      <div class="field">
-        <label>O que é Surf? <span class="hint">no contexto RP</span></label>
-        <input type="text" id="f-surf" placeholder="Descreva com suas palavras..." required>
-      </div>
-      <div class="section-label">04 — Disponibilidade</div>
-      <div class="field">
-        <label>Disponibilidade Diária</label>
-        <div class="radio-group">
-          <input type="radio" name="disp" id="d1" value="1–3h/dia"><label for="d1">1–3h/dia</label>
-          <input type="radio" name="disp" id="d2" value="3–5h/dia"><label for="d2">3–5h/dia</label>
-          <input type="radio" name="disp" id="d3" value="5h+/dia"><label for="d3">5h+/dia</label>
-        </div>
-      </div>
-      <button type="submit" class="btn-continue">▶ CONTINUAR CANDIDATURA</button>
-    </form>
-    <div class="panel-footer">
-      <a href="../index.html" class="back-link">← Voltar ao início</a>
-      <span class="footer-id">ETAPA 1 / ROTA-RP / 2026</span>
-      <div class="status-dot"></div>
+  <form id="rpForm" action="formulario" method="post" novalidate>
+  <div class="section-label">01 — Dados do Personagem</div>
+  <div class="grid-2">
+    <div class="field">
+      <label>Nome Completo <span class="hint">(IC)</span></label>
+      <input type="text" id="f-nome" name="f-nome" placeholder="Ex: João da Silva" required>
     </div>
+    <div class="field">
+      <label>Idade <span class="hint">(IC)</span></label>
+      <input type="number" id="f-idade" name="f-idade" placeholder="Ex: 28" min="18" max="60" required>
+    </div>
+  </div>
+  <div class="field">
+    <label>Nickname / Tag In-Game</label>
+    <input type="text" id="f-nick" name="f-nick" placeholder="Ex: [ROTA] JoaoSilva" required>
+  </div>
+  <div class="grid-2">
+    <div class="field">
+      <label>Discord</label>
+      <input type="text" id="f-discord" name="f-discord" placeholder="usuario#0000" required>
+    </div>
+    <div class="field">
+      <label>ID no Servidor</label>
+      <input type="text" id="f-id" name="f-id" placeholder="Ex: 12345" required>
+    </div>
+  </div>
+  <div class="section-label">02 — Background & Experiência</div>
+  <div class="field">
+    <label>Experiência com RP Policial</label>
+    <div class="radio-group">
+      <input type="radio" name="exp" id="exp-none" value="Nenhuma"><label for="exp-none">Nenhuma</label>
+      <input type="radio" name="exp" id="exp-basic" value="Básica"><label for="exp-basic">Básica</label>
+      <input type="radio" name="exp" id="exp-med" value="Intermediária"><label for="exp-med">Intermediária</label>
+      <input type="radio" name="exp" id="exp-adv" value="Avançada"><label for="exp-adv">Avançada</label>
+    </div>
+  </div>
+  <div class="field">
+    <label>Histórico do Personagem <span class="hint">(mín. 3 linhas)</span></label>
+    <textarea id="f-hist" name="f-hist" placeholder="Descreva a trajetória do seu personagem, motivações para entrar na ROTA e background..." required></textarea>
+  </div>
+  <div class="section-label">03 — Conhecimento de Roleplay</div>
+  <div class="field">
+    <label>O que é RDM? <span class="hint">Random Death Match</span></label>
+    <input type="text" id="f-rdm" name="f-rdm" placeholder="Descreva com suas palavras..." required>
+  </div>
+  <div class="field">
+    <label>O que é VDM? <span class="hint">Vehicle Death Match</span></label>
+    <input type="text" id="f-vdm" name="f-vdm" placeholder="Descreva com suas palavras..." required>
+  </div>
+  <div class="field">
+    <label>O que é PG? <span class="hint">Power Gaming</span></label>
+    <input type="text" id="f-pg" name="f-pg" placeholder="Descreva com suas palavras..." required>
+  </div>
+  <div class="field">
+    <label>O que é Meta Gaming?</label>
+    <input type="text" id="f-meta" name="f-meta" placeholder="Descreva com suas palavras..." required>
+  </div>
+  <div class="field">
+    <label>O que é Car Jacking?</label>
+    <input type="text" id="f-cj" name="f-cj" placeholder="Descreva com suas palavras..." required>
+  </div>
+  <div class="field">
+    <label>O que é Surf? <span class="hint">no contexto RP</span></label>
+    <input type="text" id="f-surf" name="f-surf" placeholder="Descreva com suas palavras..." required>
+  </div>
+  <div class="section-label">04 — Disponibilidade</div>
+  <div class="field">
+    <label>Disponibilidade Diária</label>
+    <div class="radio-group">
+      <input type="radio" name="disp" id="d1" value="1–3h/dia"><label for="d1">1–3h/dia</label>
+      <input type="radio" name="disp" id="d2" value="3–5h/dia"><label for="d2">3–5h/dia</label>
+      <input type="radio" name="disp" id="d3" value="5h+/dia"><label for="d3">5h+/dia</label>
+    </div>
+  </div>
+  <button type="submit" class="btn-continue">▶ CONTINUAR CANDIDATURA</button>
+</form>
   </div>
 </div>
 <script>
@@ -175,7 +170,6 @@ function updateProgress(){
 document.getElementById('rpForm').addEventListener('input',updateProgress);
 document.getElementById('rpForm').addEventListener('change',updateProgress);
 document.getElementById('rpForm').addEventListener('submit',function(e){
-  e.preventDefault();
   let ok=true;
   trackedIds.forEach(id=>{
     const el=document.getElementById(id);
@@ -189,8 +183,6 @@ document.getElementById('rpForm').addEventListener('submit',function(e){
   const dispEl=document.querySelector('input[name="disp"]:checked');
   dados.exp=expEl?expEl.value:'';
   dados.disp=dispEl?dispEl.value:'';
-  sessionStorage.setItem('rota_etapa1',JSON.stringify(dados));
-  window.location.href='tatico.html';
 });
 </script>
 </body>
